@@ -2,6 +2,7 @@ package registry
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -51,7 +52,7 @@ func (e *Endpoint) Validate(params map[string]string) []Issue {
 	checkTypes := !strings.HasPrefix(e.Resource, "goods_page")
 
 	if e.HasParam("fields") {
-		for _, name := range strings.Split(params["fields"], ",") {
+		for name := range strings.SplitSeq(params["fields"], ",") {
 			name = strings.TrimSpace(name)
 			if name != "" && e.Field(name) == nil {
 				issues = append(issues, Issue{Param: "fields", Message: fmt.Sprintf("unknown field %q", name), Hint: suggestHint(e, name)})
@@ -95,10 +96,5 @@ func suggestHint(e *Endpoint, name string) string {
 }
 
 func contains(xs []string, x string) bool {
-	for _, v := range xs {
-		if v == x {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(xs, x)
 }

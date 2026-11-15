@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"maps"
 	"os"
 	"sort"
 	"strings"
@@ -40,9 +41,7 @@ func send(ctx context.Context, r *request) (map[string]any, error) {
 	}
 	p := store.Profile
 	params := map[string]string{}
-	for k, v := range r.Params {
-		params[k] = v
-	}
+	maps.Copy(params, r.Params)
 	if opts.wait && params["wait_flag"] == "" && (r.EP == nil || r.EP.HasParam("wait_flag")) && r.Auth {
 		params["wait_flag"] = "1"
 	}

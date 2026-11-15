@@ -10,7 +10,7 @@
 
 ## インストール
 
-Go 1.24 以上が必要です。
+Go 1.27 以上が必要です。
 
 ```bash
 go install github.com/shopload/ne-cli@latest
