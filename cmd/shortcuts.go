@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -401,10 +402,5 @@ and return a que_id. This polls the upload queue until the entry succeeds
 }
 
 func contains(xs []string, x string) bool {
-	for _, v := range xs {
-		if v == x {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(xs, x)
 }

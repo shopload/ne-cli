@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"slices"
 	"sort"
 	"strings"
 	"unicode"
@@ -14,12 +15,7 @@ import (
 var Formats = []string{"json", "pretty", "table", "ndjson", "csv"}
 
 func ValidFormat(f string) bool {
-	for _, v := range Formats {
-		if v == f {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(Formats, f)
 }
 
 // Write renders v. For table/ndjson/csv the rows are v["data"] when it is a

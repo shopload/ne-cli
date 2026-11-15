@@ -131,12 +131,10 @@ func run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 }
 
 func asCLIError(err error) *cliError {
-	var ce *cliError
-	if errors.As(err, &ce) {
+	if ce, ok := errors.AsType[*cliError](err); ok {
 		return ce
 	}
-	var he *client.HTTPError
-	if errors.As(err, &he) {
+	if he, ok := errors.AsType[*client.HTTPError](err); ok {
 		return &cliError{Type: "http", Message: he.Error(), exit: exitNetwork}
 	}
 	var ne net.Error

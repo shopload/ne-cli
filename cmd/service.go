@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"encoding/json"
+	"maps"
 	"strconv"
 	"strings"
 	"time"
@@ -185,7 +186,7 @@ func confirmRisk(ep *registry.Endpoint) error {
 
 func splitFields(s string) []string {
 	var out []string
-	for _, f := range strings.Split(s, ",") {
+	for f := range strings.SplitSeq(s, ",") {
 		if f = strings.TrimSpace(f); f != "" {
 			out = append(out, f)
 		}
@@ -220,9 +221,7 @@ func sendPaged(ctx context.Context, ep *registry.Endpoint, params map[string]str
 			break
 		}
 		p := map[string]string{}
-		for k, v := range params {
-			p[k] = v
-		}
+		maps.Copy(p, params)
 		p["offset"], p["limit"] = strconv.Itoa(offset), strconv.Itoa(size)
 		body, err := send(ctx, requestFor(ep, p))
 		if err != nil {
